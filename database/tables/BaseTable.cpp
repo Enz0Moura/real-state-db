@@ -125,12 +125,20 @@ std::string BaseTable::getInsertQuery() const {
 
 bool BaseTable::insert(MYSQL* conn) {
     if (!primaryKey.empty()) {
-        auto it = std::find_if(columns.begin(), columns.end(), [&](const auto& col) {
+        auto itUUID = std::find_if(columns.begin(), columns.end(), [&](const auto& col) {
             return col.first == primaryKey && col.second.find("CHAR(36)") != std::string::npos;
         });
 
-        if (it != columns.end() && values[primaryKey].empty()) {
+        auto itAutoInc = std::find_if(columns.begin(), columns.end(), [&](const auto& col) {
+            return col.first == primaryKey && col.second.find("AUTO_INCREMENT") != std::string::npos;
+        });
+
+        if (itUUID != columns.end() && values[primaryKey].empty()) {
             values[primaryKey] = generateUUID();
+        }
+
+        if (itAutoInc != columns.end()) {
+            values.erase(primaryKey);
         }
     }
 
@@ -139,11 +147,19 @@ bool BaseTable::insert(MYSQL* conn) {
         throw std::runtime_error("Error inserting into table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
     }
 
+    if (!primaryKey.empty() && values.find(primaryKey) == values.end()) {
+        unsigned long long last_id = mysql_insert_id(conn);
+        if (last_id > 0) {
+            values[primaryKey] = std::to_string(last_id);
+        }
+    }
+
     fetchFromDB(conn);
 
     std::cout << "Tuple inserted into table " << tableName << " successfully." << std::endl;
     return true;
 }
+
 
 void BaseTable::setPrimaryKey(const std::string& column, const std::string& keyType) {
     primaryKey = column;
