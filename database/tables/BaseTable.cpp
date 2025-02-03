@@ -2,18 +2,30 @@
 
 void BaseTable::addColumn(const std::string& columnName, const std::string& columnType) {
     columns.emplace_back(columnName, columnType);
-    columnNames.push_back(columnName);
-    values.push_back("");
+    values[columnName] = "";
 }
 
 std::string BaseTable::getCreateQuery() const {
     std::string query = "CREATE TABLE IF NOT EXISTS " + tableName + " (";
     for (size_t i = 0; i < columns.size(); ++i) {
         query += columns[i].first + " " + columns[i].second;
-        if (i < columns.size() - 1) {
+        if (i < columns.size() - 1 || !primaryKey.empty() || !foreignKeys.empty()) {
             query += ", ";
         }
     }
+
+    if (!primaryKey.empty()) {
+        query += "PRIMARY KEY (" + primaryKey + ")";
+        if (!foreignKeys.empty()) query += ", ";
+    }
+
+    for (size_t i = 0; i < foreignKeys.size(); ++i) {
+        query += "FOREIGN KEY (" + foreignKeys[i].first + ") REFERENCES " + foreignKeys[i].second;
+        if (i < foreignKeys.size() - 1) {
+            query += ", ";
+        }
+    }
+
     query += ");";
     return query;
 }
@@ -32,40 +44,103 @@ void createAllTables(MYSQL* conn, const std::vector<BaseTable*>& tables) {
     }
 }
 
-void BaseTable::setAttribute(size_t index, const std::string& value) {
-    if (index > 0 && index < values.size()) {
-        values[index] = value;
+void BaseTable::setAttribute(const std::string& columnName, const std::string& value) {
+    if (values.find(columnName) != values.end()) {
+        values[columnName] = value;
+    } else {
+        throw std::invalid_argument("Column '" + columnName + "' does not exist in table " + tableName);
     }
 }
+
+std::string BaseTable::getAttribute(const std::string& columnName) const {
+    auto it = values.find(columnName);
+    if (it != values.end()) {
+        return it->second;
+    }
+    throw std::invalid_argument("Column '" + columnName + "' does not exist in table " + tableName);
+}
+
 
 std::string BaseTable::getInsertQuery() const {
     std::string query = "INSERT INTO " + tableName + " (";
 
-    for (size_t i = 1; i < columnNames.size(); ++i) {
-        query += columnNames[i];
-        if (i < columnNames.size() - 1) {
-            query += ", ";
+    bool first = true;
+    for (const auto& column : columns) {
+        if (column.first == primaryKey && column.second.find("AUTO_INCREMENT") != std::string::npos) {
+            continue;
         }
+        if (!first) query += ", ";
+        query += column.first;
+        first = false;
     }
+
     query += ") VALUES (";
+    first = true;
 
-    for (size_t i = 1; i < values.size(); ++i) {
-        query += "'" + values[i] + "'";
-        if (i < values.size() - 1) {
-            query += ", ";
+    for (const auto& column : columns) {
+        if (column.first == primaryKey && column.second.find("AUTO_INCREMENT") != std::string::npos) {
+            continue;
         }
+        if (!first) query += ", ";
+        query += "'" + values.at(column.first) + "'";
+        first = false;
     }
-    query += ");";
 
+    query += ");";
     return query;
 }
 
 bool BaseTable::insert(MYSQL* conn) {
     std::string query = getInsertQuery();
     if (mysql_query(conn, query.c_str())) {
-        throw std::runtime_error("Error inserting on table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
+        throw std::runtime_error("Error inserting into table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
     }
 
-    std::cout << "Tuple inserted on table " << tableName << " successfully." << std::endl;
+    if (!primaryKey.empty() && values.find(primaryKey) != values.end()) {
+        unsigned long long last_id = mysql_insert_id(conn);
+        if (last_id > 0) {
+            values[primaryKey] = std::to_string(last_id);
+        }
+    }
+
+    fetchFromDB(conn);
+
+    std::cout << "Tuple inserted into table " << tableName << " successfully." << std::endl;
     return true;
 }
+
+void BaseTable::setPrimaryKey(const std::string& column) {
+    primaryKey = column;
+}
+
+void BaseTable::addForeignKey(const std::string &column, const std::string &refTable, const std::string &refColumn) {
+    foreignKeys.emplace_back(column, refTable + "(" + refColumn + ")");
+}
+
+void BaseTable::fetchFromDB(MYSQL* conn) {
+    if (primaryKey.empty() || values[primaryKey].empty()) {
+        throw std::runtime_error("Cannot fetch data without a valid primary key.");
+    }
+
+    std::string query = "SELECT * FROM " + tableName + " WHERE " + primaryKey + " = " + values[primaryKey] + " LIMIT 1;";
+
+    if (mysql_query(conn, query.c_str())) {
+        throw std::runtime_error("Error fetching data from table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
+    }
+
+    MYSQL_RES* res = mysql_store_result(conn);
+    if (!res) {
+        throw std::runtime_error("Error retrieving result set: " + std::string(mysql_error(conn)) + "\n");
+    }
+
+    MYSQL_ROW row = mysql_fetch_row(res);
+    if (row) {
+        unsigned int num_fields = mysql_num_fields(res);
+        MYSQL_FIELD* fields = mysql_fetch_fields(res);
+        for (unsigned int i = 0; i < num_fields; i++) {
+            values[fields[i].name] = row[i] ? row[i] : "";
+        }
+    }
+
+    mysql_free_result(res);
+};

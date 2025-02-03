@@ -4,28 +4,38 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 
 
 class BaseTable {
 protected:
     std::string tableName;
     std::vector<std::pair<std::string, std::string>> columns;
-    std::vector<std::string> columnNames;
-    std::vector<std::string> values;
+    std::unordered_map<std::string, std::string> values;
+    std::string primaryKey;
+    std::vector<std::pair<std::string, std::string>> foreignKeys;
 public:
     explicit BaseTable(std::string name) : tableName(std::move(name)) {}
 
     void addColumn(const std::string& columnName, const std::string& columnType);
 
+    void setPrimaryKey(const std::string& column);
+
+    void addForeignKey(const std::string& column, const std::string& refTable, const std::string& refColumn);
+
+    void setAttribute(const std::string& columnName, const std::string& value);
+
+    std::string getAttribute(const std::string& columnName) const;
+
     std::string getCreateQuery() const;
 
     void createTable(MYSQL* conn);
 
-    void setAttribute(size_t index, const std::string& value);
-
     std::string getInsertQuery() const;
 
     bool insert(MYSQL* conn);
+
+    void fetchFromDB(MYSQL* conn);
 };
 
 void createAllTables(MYSQL* conn, const std::vector<BaseTable*>& tables);

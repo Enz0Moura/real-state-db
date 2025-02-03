@@ -7,20 +7,20 @@
 #include <iomanip>
 
 void Inquilino::set_cpf(std::string cpf) {
-    setAttribute(1, cpf);
+    setAttribute("cpf", cpf);
 }
 void Inquilino::set_nome(std::string nome){
-    setAttribute(2, nome);
+    setAttribute("nome", nome);
 
 }
 void Inquilino::set_profissao(std::string profissao){
-    setAttribute(3, profissao);
+    setAttribute("profissao", profissao);
 }
 
 void Inquilino::set_renda_familar(float renda_familar) {
     std::ostringstream stream;
     stream << std::fixed << std::setprecision(2) << renda_familar;
-    setAttribute(4, stream.str());
+    setAttribute("renda_familiar", stream.str());
 
 };
 

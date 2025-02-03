@@ -10,7 +10,8 @@
 class Inquilino: public BaseTable {
 public:
     Inquilino() : BaseTable("inquilinos") {
-        addColumn("id", "INT AUTO_INCREMENT PRIMARY KEY");
+        addColumn("id", "INT AUTO_INCREMENT");
+        setPrimaryKey("id");
         addColumn("cpf", "VARCHAR(14) UNIQUE");
         addColumn("nome", "VARCHAR(255)");
         addColumn("profissao", "VARCHAR(50)");
