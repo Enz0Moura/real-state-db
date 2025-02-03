@@ -35,8 +35,20 @@ public:
     void set_id_fiador(std::string id_fiador);
 };
 
+class TelefoneProprietario: public Telefone {
+public:
+    TelefoneProprietario() : Telefone("telefones_proprietarios") {
+        addColumn("id_proprietario", std::string(UUID) + "NOT NULL");
+        addForeignKey("id_proprietario", "proprietarios", "id", "CASCADE");
+    }
+    void set_id_proprietario(std::string id_fiador);
+};
+
+
 TelefoneInquilino* insert_telefone_inquilino(MYSQL* conn, std::string id_inquilino, std::string numero);
 
 TelefoneFiador* insert_telefone_fiador(MYSQL* conn, std::string id_fiador, std::string numero);
+
+TelefoneProprietario* insert_telefone_proprietario(MYSQL* conn, std::string id_proprietario, std::string numero);
 
 #endif //TELEFONE_H

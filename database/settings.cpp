@@ -2,6 +2,7 @@
 #include "stdexcept"
 #include "tables/Fiador.h"
 #include "tables/Inquilino.h"
+#include "tables/Proprietario.h"
 #include "tables/Telefone.h"
 
 std::unordered_map<std::string, std::string> Database::load_env(const std::string& filename) {
@@ -111,9 +112,12 @@ void Database::create_tables() {
 
     Inquilino inquilino;
     Fiador fiador;
+    Proprietario proprietario;
     TelefoneFiador telefone_fiador;
     TelefoneInquilino telefone_inquilino;
-    std::vector<BaseTable*> tables = {&inquilino, &fiador, &telefone_fiador, &telefone_inquilino};
+    TelefoneProprietario telefone_proprietario;
+
+    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &telefone_fiador, &telefone_inquilino, &telefone_proprietario};
     createAllTables(conn, tables);
 }
 

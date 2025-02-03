@@ -2,6 +2,7 @@
 #include "database/settings.h"
 #include "database/tables/Fiador.h"
 #include "database/tables/Inquilino.h"
+#include "database/tables/Proprietario.h"
 #include "database/tables/Telefone.h"
 
 int main() {
@@ -32,6 +33,9 @@ int main() {
         TelefoneInquilino* telefone_inquilino = insert_telefone_inquilino(connection, id_inquilino, "382144595");
         TelefoneInquilino* telefone_inquilino2 = insert_telefone_inquilino(connection, id_inquilino2, "3821445555");
 
+        Proprietario* proprietario = insert_proprietario(connection, "123940", "My bro", "Solterasso");
+
+        TelefoneProprietario* telefone_proprietario = insert_telefone_proprietario(connection, proprietario->getAttribute("id"), "22348910");
 
         mysql_close(connection);
     } catch (const std::exception& e){
