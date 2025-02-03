@@ -22,4 +22,14 @@ void Inquilino::set_renda_familar(float renda_familar) {
     stream << std::fixed << std::setprecision(2) << renda_familar;
     setAttribute(4, stream.str());
 
-}
+};
+
+Inquilino* insert_inquilino(MYSQL* conn, std::string cpf, std::string nome, std::string profissao, float renda_familar){
+    auto* inquilino = new Inquilino();
+    inquilino->set_nome(nome);
+    inquilino->set_cpf(cpf);
+    inquilino->set_profissao(profissao);
+    inquilino->set_renda_familar(renda_familar);
+    inquilino->insert(conn);
+    return inquilino;
+};

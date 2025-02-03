@@ -27,6 +27,8 @@ public:
 
     int create(bool drop_if_exists = false);
 
+    void create_tables();
+
     int drop();
 
 };

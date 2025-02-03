@@ -22,6 +22,6 @@ public:
     void set_renda_familar(float renda_familar);
 };
 
-
+Inquilino* insert_inquilino(MYSQL* conn, std::string cpf, std::string nome, std::string profissao, float renda_familar);
 
 #endif //INQUILINO_H

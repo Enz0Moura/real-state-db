@@ -12,18 +12,7 @@ int main() {
         };
         connection = db.connect();
 
-        Inquilino inquilino;
-        std::vector<BaseTable*> tables = {&(inquilino)};
-
-        createAllTables(connection, tables);
-
-        inquilino.set_nome("John");
-        inquilino.set_cpf("1234");
-        inquilino.set_profissao("Programador");
-        inquilino.set_renda_familar(10000.3234);
-        inquilino.insert(connection);
-
-
+        Inquilino* inquilino = insert_inquilino(connection,"123456", "Kleber", "Maquinista", 100000.32);
         mysql_close(connection);
     } catch (const std::exception& e){
         std::cerr << "Erro: " << e.what() << std::endl;

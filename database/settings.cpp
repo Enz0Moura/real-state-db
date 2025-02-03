@@ -1,5 +1,6 @@
 #include "settings.h"
 #include "stdexcept"
+#include "tables/Inquilino.h"
 
 std::unordered_map<std::string, std::string> Database::load_env(const std::string& filename) {
     std::unordered_map<std::string, std::string> env_vars;
@@ -93,8 +94,24 @@ int Database::create(bool drop_if_exists) {
 
     std::cout << "Database " + std::string(database) + " created!" << std::endl;
     mysql_close(conn);
+    this->create_tables();
     return 0;
 }
+
+void Database::create_tables() {
+    MYSQL *conn = mysql_init(0);
+    conn = mysql_real_connect(conn, host.c_str(), username.c_str(), password.c_str(),
+                              database.c_str(), port, nullptr, 0);
+
+    if (!conn) {
+        throw std::runtime_error("Failed to connect to MySQL: " + std::string(mysql_error(conn)) + "\n") ;
+    };
+
+    Inquilino inquilino;
+    std::vector<BaseTable*> tables = {&inquilino};
+    createAllTables(conn, tables);
+}
+
 
 int Database::drop() {
     std::stringstream ss;
