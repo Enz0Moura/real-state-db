@@ -1,5 +1,6 @@
 #include "settings.h"
 #include "stdexcept"
+#include "tables/Fiador.h"
 #include "tables/Inquilino.h"
 
 std::unordered_map<std::string, std::string> Database::load_env(const std::string& filename) {
@@ -108,7 +109,8 @@ void Database::create_tables() {
     };
 
     Inquilino inquilino;
-    std::vector<BaseTable*> tables = {&inquilino};
+    Fiador fiador;
+    std::vector<BaseTable*> tables = {&inquilino, &fiador};
     createAllTables(conn, tables);
 }
 
