@@ -20,8 +20,8 @@ int main() {
         Inquilino* inquilino2 = insert_inquilino(connection,"256879", "Joazinho", "Programador", 0.32);
         std::string id_inquilino2 = inquilino2->getAttribute("id");
 
-        Fiador* fiador2 = insert_fiador(connection, id_inquilino2, "5502", "Jao do biscoito", 99999.32);
         Fiador* fiador = insert_fiador(connection, id_inquilino, "15879", "Jao Kleber", 1000.32);
+        Fiador* fiador2 = insert_fiador(connection, id_inquilino2, "5502", "Jao do biscoito", 99999.32);
         std::string id_fiador1, id_fiador2;
         id_fiador1 = fiador->getAttribute("id");
         id_fiador2 = fiador2->getAttribute("id");

@@ -10,9 +10,9 @@
 class Fiador: public BaseTable {
 public:
     Fiador() : BaseTable("fiadores") {
-        addColumn("id", "INT AUTO_INCREMENT");
-        setPrimaryKey("id");
-        addColumn("id_inq", "INT NOT NULL");
+        addColumn("id", UUID);
+        setPrimaryKey("id", "UUID");
+        addColumn("id_inq", std::string(UUID) + " NOT NULL");
         addForeignKey("id_inq", "inquilinos", "id", "CASCADE");
         addColumn("cpf", "VARCHAR(14) UNIQUE");
         addColumn("nome", "VARCHAR(255)");

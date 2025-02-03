@@ -10,8 +10,8 @@
 class Telefone: public BaseTable {
 public:
     explicit Telefone(const std::string& nome_tabela) : BaseTable(nome_tabela) {
-        addColumn("id", "INT AUTO_INCREMENT");
-        setPrimaryKey("id");
+        addColumn("id", UUID);
+        setPrimaryKey("id", "UUID");
         addColumn("numero", "VARCHAR(30) UNIQUE");
     }
     void set_numero(std::string numero);
@@ -20,7 +20,7 @@ public:
 class TelefoneInquilino: public Telefone {
 public:
     TelefoneInquilino() : Telefone("telefones_inquilinos") {
-        addColumn("id_inquilino", "INT NOT NULL");
+        addColumn("id_inquilino", std::string(UUID) + " NOT NULL");
         addForeignKey("id_inquilino", "inquilinos", "id", "CASCADE");
     }
     void set_id_inquilino(std::string id_inquilino);
@@ -29,7 +29,7 @@ public:
 class TelefoneFiador: public Telefone {
 public:
     TelefoneFiador() : Telefone("telefones_fiadores") {
-        addColumn("id_fiador", "INT NOT NULL");
+        addColumn("id_fiador", std::string(UUID) + "NOT NULL");
         addForeignKey("id_fiador", "fiadores", "id", "CASCADE");
     }
     void set_id_fiador(std::string id_fiador);

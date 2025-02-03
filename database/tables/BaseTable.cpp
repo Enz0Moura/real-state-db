@@ -1,5 +1,33 @@
 #include "BaseTable.h"
 
+#include <algorithm>
+#include <sstream>
+#include <iomanip>
+#include <random>
+
+std::string BaseTable::generateUUID() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(0, 15);
+    std::uniform_int_distribution<int> dis2(8, 11);
+
+    std::stringstream ss;
+    ss << std::hex << std::setfill('0');
+
+    for (int i = 0; i < 8; i++) ss << dis(gen);
+    ss << "-";
+    for (int i = 0; i < 4; i++) ss << dis(gen);
+    ss << "-4"; // UUID v4
+    for (int i = 0; i < 3; i++) ss << dis(gen);
+    ss << "-";
+    ss << dis2(gen); // Primeiro dígito entre 8 e 11
+    for (int i = 0; i < 3; i++) ss << dis(gen);
+    ss << "-";
+    for (int i = 0; i < 12; i++) ss << dis(gen);
+
+    return ss.str();
+}
+
 void BaseTable::addColumn(const std::string& columnName, const std::string& columnType) {
     columns.emplace_back(columnName, columnType);
     values[columnName] = "";
@@ -72,6 +100,7 @@ std::string BaseTable::getInsertQuery() const {
         if (column.first == primaryKey && column.second.find("AUTO_INCREMENT") != std::string::npos) {
             continue;
         }
+
         if (!first) query += ", ";
         query += column.first;
         first = false;
@@ -84,6 +113,7 @@ std::string BaseTable::getInsertQuery() const {
         if (column.first == primaryKey && column.second.find("AUTO_INCREMENT") != std::string::npos) {
             continue;
         }
+
         if (!first) query += ", ";
         query += "'" + values.at(column.first) + "'";
         first = false;
@@ -94,16 +124,19 @@ std::string BaseTable::getInsertQuery() const {
 }
 
 bool BaseTable::insert(MYSQL* conn) {
+    if (!primaryKey.empty()) {
+        auto it = std::find_if(columns.begin(), columns.end(), [&](const auto& col) {
+            return col.first == primaryKey && col.second.find("CHAR(36)") != std::string::npos;
+        });
+
+        if (it != columns.end() && values[primaryKey].empty()) {
+            values[primaryKey] = generateUUID();
+        }
+    }
+
     std::string query = getInsertQuery();
     if (mysql_query(conn, query.c_str())) {
         throw std::runtime_error("Error inserting into table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
-    }
-
-    if (!primaryKey.empty() && values.find(primaryKey) != values.end()) {
-        unsigned long long last_id = mysql_insert_id(conn);
-        if (last_id > 0) {
-            values[primaryKey] = std::to_string(last_id);
-        }
     }
 
     fetchFromDB(conn);
@@ -112,8 +145,17 @@ bool BaseTable::insert(MYSQL* conn) {
     return true;
 }
 
-void BaseTable::setPrimaryKey(const std::string& column) {
+void BaseTable::setPrimaryKey(const std::string& column, const std::string& keyType) {
     primaryKey = column;
+    if (keyType == "UUID") {
+        for (auto& col : columns) {
+            if (col.first == column) {
+                col.second = "CHAR(36)";
+                return;
+            }
+        }
+        addColumn(column, "CHAR(36)");
+    }
 }
 
 void BaseTable::addForeignKey(const std::string& column, const std::string& refTable, const std::string& refColumn, const std::string& onDelete){
@@ -124,8 +166,18 @@ void BaseTable::fetchFromDB(MYSQL* conn) {
     if (primaryKey.empty() || values[primaryKey].empty()) {
         throw std::runtime_error("Cannot fetch data without a valid primary key.");
     }
+    std::string query_pk = values[primaryKey];
 
-    std::string query = "SELECT * FROM " + tableName + " WHERE " + primaryKey + " = " + values[primaryKey] + " LIMIT 1;";
+    auto it = std::find_if(columns.begin(), columns.end(), [&](const auto& col) {
+        return col.first == primaryKey && col.second.find("CHAR(36)") != std::string::npos;
+    });
+
+    if (it->first == "id" && it->second == UUID) {
+        query_pk = "'"+query_pk+"'";
+    }
+
+
+    std::string query = "SELECT * FROM " + tableName + " WHERE " + primaryKey + " = " + query_pk + " LIMIT 1;";
 
     if (mysql_query(conn, query.c_str())) {
         throw std::runtime_error("Error fetching data from table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");

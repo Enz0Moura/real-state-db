@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <unordered_map>
+#define UUID "CHAR(36)"
 
 
 class BaseTable {
@@ -17,9 +18,11 @@ protected:
 public:
     explicit BaseTable(std::string name) : tableName(std::move(name)) {}
 
+    std::string generateUUID();
+
     void addColumn(const std::string& columnName, const std::string& columnType);
 
-    void setPrimaryKey(const std::string& column);
+    void setPrimaryKey(const std::string& column, const std::string& keyType = "");
 
     void addForeignKey(const std::string& column, const std::string& refTable, const std::string& refColumn, const std::string& onDelete = "");
 
