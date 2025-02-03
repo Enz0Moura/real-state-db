@@ -13,7 +13,7 @@ public:
         addColumn("id", "INT AUTO_INCREMENT");
         setPrimaryKey("id");
         addColumn("id_inq", "INT NOT NULL");
-        addForeignKey("id_inq", "inquilinos", "id");
+        addForeignKey("id_inq", "inquilinos", "id", "CASCADE");
         addColumn("cpf", "VARCHAR(14) UNIQUE");
         addColumn("nome", "VARCHAR(255)");
         addColumn("saldo", "FLOAT");

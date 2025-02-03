@@ -20,7 +20,10 @@ std::string BaseTable::getCreateQuery() const {
     }
 
     for (size_t i = 0; i < foreignKeys.size(); ++i) {
-        query += "FOREIGN KEY (" + foreignKeys[i].first + ") REFERENCES " + foreignKeys[i].second;
+        query += "FOREIGN KEY (" + std::get<0>(foreignKeys[i]) + ") REFERENCES " + std::get<1>(foreignKeys[i]);
+        if (!std::get<2>(foreignKeys[i]).empty()) {
+            query += " ON DELETE " + std::get<2>(foreignKeys[i]);
+        }
         if (i < foreignKeys.size() - 1) {
             query += ", ";
         }
@@ -113,8 +116,8 @@ void BaseTable::setPrimaryKey(const std::string& column) {
     primaryKey = column;
 }
 
-void BaseTable::addForeignKey(const std::string &column, const std::string &refTable, const std::string &refColumn) {
-    foreignKeys.emplace_back(column, refTable + "(" + refColumn + ")");
+void BaseTable::addForeignKey(const std::string& column, const std::string& refTable, const std::string& refColumn, const std::string& onDelete){
+    foreignKeys.emplace_back(column, refTable + "(" + refColumn + ")", onDelete);
 }
 
 void BaseTable::fetchFromDB(MYSQL* conn) {

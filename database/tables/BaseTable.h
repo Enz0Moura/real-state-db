@@ -13,7 +13,7 @@ protected:
     std::vector<std::pair<std::string, std::string>> columns;
     std::unordered_map<std::string, std::string> values;
     std::string primaryKey;
-    std::vector<std::pair<std::string, std::string>> foreignKeys;
+    std::vector<std::tuple<std::string, std::string, std::string>> foreignKeys;
 public:
     explicit BaseTable(std::string name) : tableName(std::move(name)) {}
 
@@ -21,7 +21,7 @@ public:
 
     void setPrimaryKey(const std::string& column);
 
-    void addForeignKey(const std::string& column, const std::string& refTable, const std::string& refColumn);
+    void addForeignKey(const std::string& column, const std::string& refTable, const std::string& refColumn, const std::string& onDelete = "");
 
     void setAttribute(const std::string& columnName, const std::string& value);
 
