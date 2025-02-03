@@ -44,5 +44,3 @@ int main() {
 
 
 //todo: reminder NÃO UTILIZAR CASCADE EM TODAS AS ENTIDADES
-
-//todo adicionar lógica de deleção de telefones
