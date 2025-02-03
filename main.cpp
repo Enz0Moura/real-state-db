@@ -2,6 +2,7 @@
 #include "database/settings.h"
 #include "database/tables/Fiador.h"
 #include "database/tables/Inquilino.h"
+#include "database/tables/Telefone.h"
 
 int main() {
     Database db;
@@ -21,6 +22,15 @@ int main() {
 
         Fiador* fiador2 = insert_fiador(connection, id_inquilino2, "5502", "Jao do biscoito", 99999.32);
         Fiador* fiador = insert_fiador(connection, id_inquilino, "15879", "Jao Kleber", 1000.32);
+        std::string id_fiador1, id_fiador2;
+        id_fiador1 = fiador->getAttribute("id");
+        id_fiador2 = fiador2->getAttribute("id");
+
+        TelefoneFiador* telefone_fiador1 = insert_telefone_fiador(connection, id_fiador1, "2358392385");
+        TelefoneFiador* telefone_fiador2 = insert_telefone_fiador(connection, id_fiador2, "235844444385");
+
+        TelefoneInquilino* telefone_inquilino = insert_telefone_inquilino(connection, id_inquilino, "382144595");
+        TelefoneInquilino* telefone_inquilino2 = insert_telefone_inquilino(connection, id_inquilino2, "3821445555");
 
 
         mysql_close(connection);
@@ -31,3 +41,8 @@ int main() {
     }
     return 0;
 }
+
+
+//todo: reminder NÃO UTILIZAR CASCADE EM TODAS AS ENTIDADES
+
+//todo adicionar lógica de deleção de telefones

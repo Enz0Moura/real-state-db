@@ -15,6 +15,8 @@ add_executable(imobiliaria_BD main.cpp
         database/tables/Inquilino.cpp
         database/tables/Inquilino.h
         database/tables/Fiador.cpp
-        database/tables/Fiador.h)
+        database/tables/Fiador.h
+        database/tables/Telefone.cpp
+        database/tables/Telefone.h)
 
 target_link_libraries(imobiliaria_BD mysqlclient)

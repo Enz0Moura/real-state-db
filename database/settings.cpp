@@ -2,6 +2,7 @@
 #include "stdexcept"
 #include "tables/Fiador.h"
 #include "tables/Inquilino.h"
+#include "tables/Telefone.h"
 
 std::unordered_map<std::string, std::string> Database::load_env(const std::string& filename) {
     std::unordered_map<std::string, std::string> env_vars;
@@ -110,7 +111,9 @@ void Database::create_tables() {
 
     Inquilino inquilino;
     Fiador fiador;
-    std::vector<BaseTable*> tables = {&inquilino, &fiador};
+    TelefoneFiador telefone_fiador;
+    TelefoneInquilino telefone_inquilino;
+    std::vector<BaseTable*> tables = {&inquilino, &fiador, &telefone_fiador, &telefone_inquilino};
     createAllTables(conn, tables);
 }
 
@@ -133,8 +136,6 @@ int Database::drop() {
         const char* error = mysql_error(conn);
         mysql_close(conn);
         throw std::runtime_error("Failed to drop database: " + std::string(error) + "\n");
-
-        return -1;
     }
 
     std::cout << "Database " + std::string(database) + " dropped!" << std::endl;
