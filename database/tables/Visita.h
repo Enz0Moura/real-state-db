@@ -14,10 +14,10 @@ class Visita: public BaseTable {
         setPrimaryKey("id", "UUID");
         addColumn("id_inquilino", UUID);
         addForeignKey("id_inquilino", "inquilinos", "id", "SET NULL");
-        addColumn("id_corretor", UUID);
-        addForeignKey("id_corretor", "corretores_autonomos", "id", "SET NULL");
         addColumn("id_imovel", UUID);
         addForeignKey("id_imovel", "imoveis", "id", "CASCADE");
+        addColumn("id_corretor", UUID);
+        addForeignKey("id_corretor", "corretores_autonomos", "id", "SET NULL");
         addColumn("data", "DATETIME");
     };
     void set_id_inquilino(std::string& id_inquilino);
