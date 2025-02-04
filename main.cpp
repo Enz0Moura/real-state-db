@@ -1,6 +1,7 @@
 #include <mysql/mysql.h>
 #include "database/settings.h"
 #include "database/tables/Fiador.h"
+#include "database/tables/Imovel.h"
 #include "database/tables/Inquilino.h"
 #include "database/tables/Proprietario.h"
 #include "database/tables/Telefone.h"
@@ -36,7 +37,7 @@ int main() {
         Proprietario* proprietario = insert_proprietario(connection, "123940", "My bro", "Solterasso");
 
         TelefoneProprietario* telefone_proprietario = insert_telefone_proprietario(connection, proprietario->getAttribute("id"), "22348910");
-
+        Imovel* imovel = insert_imovel(connection, 3, 1, 350.45);
         mysql_close(connection);
     } catch (const std::exception& e){
         std::cerr << "Erro: " << e.what() << std::endl;
