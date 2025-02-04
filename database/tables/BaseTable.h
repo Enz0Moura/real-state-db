@@ -43,6 +43,10 @@ public:
 
     bool insert(MYSQL* conn);
 
+    bool update(MYSQL* conn);
+
+    bool remove_entry(MYSQL* conn);
+
     void fetchFromDB(MYSQL* conn);
 
     static std::string generateUUID();

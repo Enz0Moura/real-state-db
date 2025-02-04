@@ -63,6 +63,10 @@ int main() {
 
         insert_contrato_aluguel(connection, id_inquilino2, imovel->getAttribute("id"), BaseTable::generateUUID(), 11000, "2026-06-12");
 
+        inquilino->setAttribute("nome", "NOME MODIFICADO");
+        inquilino->update(connection);
+        inquilino->remove_entry(connection);
+
         mysql_close(connection);
     } catch (const std::exception &e) {
         std::cerr << "Erro: " << e.what() << std::endl;
@@ -75,3 +79,4 @@ int main() {
 //todo: fazer verificações de integridade dentro do código.
 //todo: trocar pk's no DER para UUID
 //todo: normalizar nome de métodos e variáveis
+//todo: se for deletar oferta, deletará imóvel.

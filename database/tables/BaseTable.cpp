@@ -197,6 +197,55 @@ bool BaseTable::insert(MYSQL* conn) {
     return true;
 }
 
+bool BaseTable::update(MYSQL* conn) {
+    if (primaryKey.empty() || values[primaryKey].empty()) {
+        throw std::runtime_error("Cannot update without a valid primary key.");
+    }
+
+    std::string query = "UPDATE " + tableName + " SET ";
+    bool first = true;
+
+    for (const auto& column : columns) {
+        const std::string& columnName = column.first;
+
+        if (columnName == primaryKey) {
+            continue;
+        }
+
+        if (values.find(columnName) != values.end() && values.at(columnName) == "NULL") {
+            continue;
+        }
+
+        if (!first) query += ", ";
+
+        query += columnName + " = '" + values[columnName] + "'";
+        first = false;
+    }
+
+    query += " WHERE " + primaryKey + " = '" + values[primaryKey] + "';";
+
+    if (mysql_query(conn, query.c_str())) {
+        throw std::runtime_error("Error updating table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
+    }
+
+    std::cout << "Tuple updated in table " << tableName << " successfully." << std::endl;
+    return true;
+}
+
+bool BaseTable::remove_entry(MYSQL* conn) {
+    if (primaryKey.empty() || values[primaryKey].empty()) {
+        throw std::runtime_error("Cannot delete without a valid primary key.");
+    }
+
+    std::string query = "DELETE FROM " + tableName + " WHERE " + primaryKey + " = '" + values[primaryKey] + "';";
+
+    if (mysql_query(conn, query.c_str())) {
+        throw std::runtime_error("Error deleting from table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
+    }
+
+    std::cout << "Tuple deleted from table " << tableName << " successfully." << std::endl;
+    return true;
+}
 
 void BaseTable::setPrimaryKey(const std::string& column, const std::string& keyType) {
     primaryKey = column;
