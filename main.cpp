@@ -6,6 +6,7 @@
 #include "database/tables/Imovel.h"
 #include "database/tables/Inquilino.h"
 #include "database/tables/Oferta.h"
+#include "database/tables/Proposta.h"
 #include "database/tables/Proprietario.h"
 #include "database/tables/Telefone.h"
 #include "database/tables/Visita.h"
@@ -48,7 +49,7 @@ int main() {
                                                                  imovel->getAttribute("id"));
 
         CorretorAutonomo *corretor_autonomo = insert_corretor_autonomo(connection, BaseTable::generateUUID(), "Kleber",
-                                                                       "25-05-1987", 500.221);
+                                                                       "1987-05-25", 500.221);
 
         insert_telefone_corretor_autonomo(connection, corretor_autonomo->getAttribute("id"), "(22)482373895");
 
@@ -56,7 +57,9 @@ int main() {
         insert_oferta(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), 1230.99);
 
         insert_visita(connection, inquilino->getAttribute("id"), corretor_autonomo->getAttribute("id"),
-                      imovel->getAttribute("id"), "13-03-2020");
+                      imovel->getAttribute("id"), "2020-03-13");
+
+        insert_proposta(connection, id_inquilino2, imovel->getAttribute("id"), 1100.99, "2025-05-02");
 
         mysql_close(connection);
     } catch (const std::exception &e) {

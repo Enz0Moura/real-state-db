@@ -6,6 +6,7 @@
 #include "tables/Imovel.h"
 #include "tables/Inquilino.h"
 #include "tables/Oferta.h"
+#include "tables/Proposta.h"
 #include "tables/Proprietario.h"
 #include "tables/Telefone.h"
 #include "tables/Visita.h"
@@ -127,8 +128,9 @@ void Database::create_tables() {
     CertidaoImovel certidao_imovel;
     Oferta oferta;
     Visita visita;
+    Proposta proposta;
 
-    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &visita, &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo};
+    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &visita, &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo, &proposta};
     createAllTables(conn, tables);
 }
 
