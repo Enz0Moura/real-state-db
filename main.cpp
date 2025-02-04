@@ -4,6 +4,7 @@
 #include "database/tables/Fiador.h"
 #include "database/tables/Imovel.h"
 #include "database/tables/Inquilino.h"
+#include "database/tables/Oferta.h"
 #include "database/tables/Proprietario.h"
 #include "database/tables/Telefone.h"
 
@@ -42,8 +43,8 @@ int main() {
 
         CertidaoImovel* certidao_imovel = insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"));
 
-        insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), BaseTable::stringToTimeT("2019-10-21","%Y-%m-%d"));
-
+        ;insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), BaseTable::stringToTimeT("2019-10-21","%Y-%m-%d"));
+        insert_oferta(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"),1230.99);
 
         mysql_close(connection);
     } catch (const std::exception& e){
