@@ -1,6 +1,7 @@
 #include "settings.h"
 #include "stdexcept"
 #include "tables/CertidaoImovel.h"
+#include "tables/ContratoAluguel.h"
 #include "tables/CorretorAutonomo.h"
 #include "tables/Fiador.h"
 #include "tables/Imovel.h"
@@ -11,7 +12,7 @@
 #include "tables/Telefone.h"
 #include "tables/Visita.h"
 
-std::unordered_map<std::string, std::string> Database::load_env(const std::string& filename) {
+std::unordered_map<std::string, std::string> Database::load_env(const std::string &filename) {
     std::unordered_map<std::string, std::string> env_vars;
     std::ifstream file(filename);
 
@@ -34,8 +35,8 @@ std::unordered_map<std::string, std::string> Database::load_env(const std::strin
     return env_vars;
 }
 
-Database::Database(const std::string& env_file ) {
-    std::unordered_map<std::string, std::string>  env = load_env(env_file);
+Database::Database(const std::string &env_file) {
+    std::unordered_map<std::string, std::string> env = load_env(env_file);
 
     host = env["DB_HOST"];
     username = env["DB_USER"];
@@ -44,8 +45,8 @@ Database::Database(const std::string& env_file ) {
     port = std::stoi(env["DB_PORT"]);
 }
 
-MYSQL* Database::connect() {
-    MYSQL* conn = mysql_init(nullptr);
+MYSQL *Database::connect() {
+    MYSQL *conn = mysql_init(nullptr);
 
     if (!conn) {
         throw std::runtime_error("MySQL initialization failed!\n");
@@ -54,7 +55,7 @@ MYSQL* Database::connect() {
     conn = mysql_real_connect(conn, host.c_str(), username.c_str(), password.c_str(),
                               database.c_str(), port, nullptr, 0);
     if (!conn) {
-        throw std::runtime_error("Failed to connect to Database: " + std::string(mysql_error(conn)) + "\n") ;
+        throw std::runtime_error("Failed to connect to Database: " + std::string(mysql_error(conn)) + "\n");
     }
 
     std::cout << "Connected to database successfully!" << std::endl;
@@ -62,15 +63,15 @@ MYSQL* Database::connect() {
 }
 
 bool Database::test_connection() {
-    MYSQL* conn = mysql_init(nullptr);
+    MYSQL *conn = mysql_init(nullptr);
 
     if (!conn) {
-    throw std::runtime_error("MySQL initialization failed!\n");
+        throw std::runtime_error("MySQL initialization failed!\n");
     }
     conn = mysql_real_connect(conn, host.c_str(), username.c_str(), password.c_str(),
                               database.c_str(), port, nullptr, 0);
     if (!conn) {
-        std::cout << "Couldn't connect to Database: " + std::string(mysql_error(conn)) + "\n" ;
+        std::cout << "Couldn't connect to Database: " + std::string(mysql_error(conn)) + "\n";
         return false;
     }
     std::cout << "Could connect to database successfully!" << std::endl;
@@ -89,14 +90,14 @@ int Database::create(bool drop_if_exists) {
                               nullptr, port, nullptr, 0);
 
     if (!conn) {
-        throw std::runtime_error("Failed to connect to MySQL: " + std::string(mysql_error(conn)) + "\n") ;
+        throw std::runtime_error("Failed to connect to MySQL: " + std::string(mysql_error(conn)) + "\n");
     };
 
     ss << "CREATE DATABASE IF NOT EXISTS " + std::string(database) + ";";
     std::string query = ss.str();
 
     if (mysql_query(conn, query.c_str())) {
-        const char* error = mysql_error(conn);
+        const char *error = mysql_error(conn);
         mysql_close(conn);
         throw std::runtime_error("Failed to create database: " + std::string(error) + "\n");
     }
@@ -113,7 +114,7 @@ void Database::create_tables() {
                               database.c_str(), port, nullptr, 0);
 
     if (!conn) {
-        throw std::runtime_error("Failed to connect to MySQL: " + std::string(mysql_error(conn)) + "\n") ;
+        throw std::runtime_error("Failed to connect to MySQL: " + std::string(mysql_error(conn)) + "\n");
     };
 
     Inquilino inquilino;
@@ -129,8 +130,13 @@ void Database::create_tables() {
     Oferta oferta;
     Visita visita;
     Proposta proposta;
+    ContratoAluguel contrato_aluguel;
 
-    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &visita, &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo, &proposta};
+    std::vector<BaseTable *> tables = {
+        &inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &visita,
+        &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo, &proposta,
+        &contrato_aluguel
+    };
     createAllTables(conn, tables);
 }
 
@@ -143,14 +149,14 @@ int Database::drop() {
                               database.c_str(), port, nullptr, 0);
 
     if (!conn) {
-        throw std::runtime_error("Failed to connect to MySQL: " + std::string(mysql_error(conn)) + "\n") ;
+        throw std::runtime_error("Failed to connect to MySQL: " + std::string(mysql_error(conn)) + "\n");
     };
 
     ss << "DROP DATABASE IF EXISTS " + std::string(database) + ";";
     std::string query = ss.str();
 
     if (mysql_query(conn, query.c_str())) {
-        const char* error = mysql_error(conn);
+        const char *error = mysql_error(conn);
         mysql_close(conn);
         throw std::runtime_error("Failed to drop database: " + std::string(error) + "\n");
     }

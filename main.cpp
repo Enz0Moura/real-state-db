@@ -1,6 +1,7 @@
 #include <mysql/mysql.h>
 #include "database/settings.h"
 #include "database/tables/CertidaoImovel.h"
+#include "database/tables/ContratoAluguel.h"
 #include "database/tables/CorretorAutonomo.h"
 #include "database/tables/Fiador.h"
 #include "database/tables/Imovel.h"
@@ -53,13 +54,14 @@ int main() {
 
         insert_telefone_corretor_autonomo(connection, corretor_autonomo->getAttribute("id"), "(22)482373895");
 
-        //insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), BaseTable::stringToTimeT("2019-10-21","%Y-%m-%d"));
         insert_oferta(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), 1230.99);
 
         insert_visita(connection, inquilino->getAttribute("id"), corretor_autonomo->getAttribute("id"),
                       imovel->getAttribute("id"), "2020-03-13");
 
         insert_proposta(connection, id_inquilino2, imovel->getAttribute("id"), 1100.99, "2025-05-02");
+
+        insert_contrato_aluguel(connection, id_inquilino2, imovel->getAttribute("id"), BaseTable::generateUUID(), 11000, "2026-06-12");
 
         mysql_close(connection);
     } catch (const std::exception &e) {
