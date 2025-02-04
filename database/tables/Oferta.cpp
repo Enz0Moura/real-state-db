@@ -1,8 +1,7 @@
 #include "Oferta.h"
 
 void Oferta::set_data(std::string data) {
-    std::time_t data_timestamp = stringToTimeT(data, DATE_FORMAT);
-    std::string data_date_time = formatDateTime(data_timestamp);
+    std::string data_date_time = date_to_datetime(data);
     setAttribute("data", data_date_time);
 }
 
