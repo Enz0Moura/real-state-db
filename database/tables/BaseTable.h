@@ -11,7 +11,7 @@
 #include <random>
 
 #define UUID "CHAR(36)"
-
+#define DATE_FORMAT "%Y-%m-%d"
 
 class BaseTable {
 protected:
