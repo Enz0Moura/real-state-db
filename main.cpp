@@ -1,5 +1,6 @@
 #include <mysql/mysql.h>
 #include "database/settings.h"
+#include "database/tables/CertidaoImovel.h"
 #include "database/tables/Fiador.h"
 #include "database/tables/Imovel.h"
 #include "database/tables/Inquilino.h"
@@ -38,6 +39,12 @@ int main() {
 
         TelefoneProprietario* telefone_proprietario = insert_telefone_proprietario(connection, proprietario->getAttribute("id"), "22348910");
         Imovel* imovel = insert_imovel(connection, 3, 1, 350.45);
+
+        CertidaoImovel* certidao_imovel = insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"));
+
+        insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), BaseTable::stringToTimeT("2019-10-21","%Y-%m-%d"));
+
+
         mysql_close(connection);
     } catch (const std::exception& e){
         std::cerr << "Erro: " << e.what() << std::endl;
