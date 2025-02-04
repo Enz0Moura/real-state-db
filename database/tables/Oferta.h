@@ -17,7 +17,7 @@ class Oferta: public BaseTable {
         addColumn("id_prop", std::string(UUID) + " NOT NULL");
         addForeignKey("id_prop", "proprietarios", "id", "CASCADE");
         addColumn("id_imovel", std::string(UUID) + " NOT NULL");
-        addForeignKey("id_imovel", "imoveis", "id", "CASCADE"); // acho que cascade não vai ser interessante
+        addForeignKey("id_imovel", "imoveis", "id", "CASCADE");
         addColumn("data", "DATETIME");
         addColumn("valor_desejado", "FLOAT");
     }

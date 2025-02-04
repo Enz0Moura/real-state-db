@@ -1,6 +1,7 @@
 #include <mysql/mysql.h>
 #include "database/settings.h"
 #include "database/tables/CertidaoImovel.h"
+#include "database/tables/CorretorAutonomo.h"
 #include "database/tables/Fiador.h"
 #include "database/tables/Imovel.h"
 #include "database/tables/Inquilino.h"
@@ -43,7 +44,11 @@ int main() {
 
         CertidaoImovel* certidao_imovel = insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"));
 
-        ;insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), BaseTable::stringToTimeT("2019-10-21","%Y-%m-%d"));
+        CorretorAutonomo* corretor_autonomo = insert_corretor_autonomo(connection, BaseTable::generateUUID(), "Kleber", "25-05-1987", 500.221);
+
+        insert_telefone_corretor_autonomo(connection, corretor_autonomo->getAttribute("id"), "(22)482373895");
+
+        //insert_certidao_imovel(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), BaseTable::stringToTimeT("2019-10-21","%Y-%m-%d"));
         insert_oferta(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"),1230.99);
 
         mysql_close(connection);
@@ -55,5 +60,6 @@ int main() {
     return 0;
 }
 
-
+//todo: tirar os inserts das funções e colocar antes.
 //todo: reminder NÃO UTILIZAR CASCADE EM TODAS AS ENTIDADES
+//todo: fazer verificações de integridade dentro do código.

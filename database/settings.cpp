@@ -1,6 +1,7 @@
 #include "settings.h"
 #include "stdexcept"
 #include "tables/CertidaoImovel.h"
+#include "tables/CorretorAutonomo.h"
 #include "tables/Fiador.h"
 #include "tables/Imovel.h"
 #include "tables/Inquilino.h"
@@ -116,14 +117,16 @@ void Database::create_tables() {
     Inquilino inquilino;
     Fiador fiador;
     Proprietario proprietario;
+    CorretorAutonomo corretor_autonomo;
     TelefoneFiador telefone_fiador;
     TelefoneInquilino telefone_inquilino;
     TelefoneProprietario telefone_proprietario;
+    TelefoneCorretorAutonomo telefone_corretor_autonomo;
     Imovel imovel;
     CertidaoImovel certidao_imovel;
     Oferta oferta;
 
-    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &imovel, &certidao_imovel, &oferta};
+    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo};
     createAllTables(conn, tables);
 }
 

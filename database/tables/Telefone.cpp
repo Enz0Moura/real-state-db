@@ -16,6 +16,10 @@ void TelefoneProprietario::set_id_proprietario(std::string id_proprietario) {
     setAttribute("id_proprietario", id_proprietario);
 }
 
+void TelefoneCorretorAutonomo::set_id_corretor_autonomo(std::string id_corretor) {
+    setAttribute("id_corretor", id_corretor);
+}
+
 TelefoneInquilino* insert_telefone_inquilino(MYSQL* conn, std::string id_inquilino, std::string numero){
     auto* telefone_inquilino = new TelefoneInquilino();
     telefone_inquilino->set_numero(numero);
@@ -41,4 +45,11 @@ TelefoneProprietario* insert_telefone_proprietario(MYSQL* conn, std::string id_p
     return telefone_proprietario;
 }
 
+TelefoneCorretorAutonomo *insert_telefone_corretor_autonomo(MYSQL *conn, std::string id_corretor, std::string numero) {
+    auto* telefone_corretor_autonomo = new TelefoneCorretorAutonomo();
+    telefone_corretor_autonomo->set_numero(numero);
+    telefone_corretor_autonomo->set_id_corretor_autonomo(id_corretor);
+    telefone_corretor_autonomo->insert(conn);
+    return telefone_corretor_autonomo;
+}
 
