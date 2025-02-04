@@ -72,7 +72,6 @@ int main() {
     return 0;
 }
 
-//todo: reminder NÃO UTILIZAR CASCADE EM TODAS AS ENTIDADES
 //todo: fazer verificações de integridade dentro do código.
 //todo: trocar pk's no DER para UUID
 //todo: normalizar nome de métodos e variáveis

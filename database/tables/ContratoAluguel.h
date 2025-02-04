@@ -11,7 +11,7 @@ class ContratoAluguel: public BaseTable {
         addColumn("id_inquilino", UUID);
         addForeignKey("id_inquilino", "inquilinos", "id", "SET NULL");
         addColumn("id_imovel", UUID);
-        addForeignKey("id_imovel", "imoveis", "id", "CASCADE");
+        addForeignKey("id_imovel", "imoveis", "id", "SET NULL");
         addColumn("num_contrato", std::string(UUID) + " UNIQUE");
         addColumn("valor", "FLOAT");
         addColumn("duracao", "DATETIME");

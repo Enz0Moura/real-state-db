@@ -18,7 +18,7 @@ public:
         addColumn("nome", "VARCHAR(255)");
         addColumn("saldo", "FLOAT");
     }
-    void link_inq_fiador(std::string id_inq); // FK deverá ser string para facilitar a consulta
+    void link_inq_fiador(std::string id_inq);
     void set_cpf(std::string cpf);
     void set_nome(std::string nome);
     void set_saldo(float saldo);
