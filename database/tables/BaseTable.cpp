@@ -126,6 +126,9 @@ std::string BaseTable::getInsertQuery() const {
         if (column.first == primaryKey && column.second.find("AUTO_INCREMENT") != std::string::npos) {
             continue;
         }
+        if (values.find(column.first) != values.end() && values.at(column.first) == "NULL") {
+            continue;
+        }
 
         if (!first) query += ", ";
         query += column.first;
@@ -139,6 +142,10 @@ std::string BaseTable::getInsertQuery() const {
         if (column.first == primaryKey && column.second.find("AUTO_INCREMENT") != std::string::npos) {
             continue;
         }
+        if (values.find(column.first) != values.end() && values.at(column.first) == "NULL") {
+            continue;
+        }
+
         if (column.second.find("DATETIME") != std::string::npos && values.at(column.first).empty()) {
             const_cast<BaseTable*>(this)->values[column.first] = getCurrentDateTime();
         }
