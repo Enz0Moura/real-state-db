@@ -133,7 +133,7 @@ void Database::create_tables() {
     ContratoAluguel contrato_aluguel;
 
     std::vector<BaseTable *> tables = {
-        &inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &visita,
+        &inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &corretor_autonomo, &oferta, &visita,
         &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo, &proposta,
         &contrato_aluguel
     };

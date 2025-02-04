@@ -54,7 +54,7 @@ int main() {
 
         insert_telefone_corretor_autonomo(connection, corretor_autonomo->getAttribute("id"), "(22)482373895");
 
-        insert_oferta(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), 1230.99);
+        Oferta* oferta=insert_oferta(connection, proprietario->getAttribute("id"), imovel->getAttribute("id"), 1230.99, corretor_autonomo->getAttribute("id"));
 
         insert_visita(connection, inquilino->getAttribute("id"), corretor_autonomo->getAttribute("id"),
                       imovel->getAttribute("id"), "2020-03-13");
