@@ -44,7 +44,7 @@ int main() {
 
         TelefoneProprietario *telefone_proprietario = insert_telefone_proprietario(
             connection, proprietario->getAttribute("id"), "22348910");
-        Imovel *imovel = insert_imovel(connection, 3, 1, 350.45);
+        Imovel *imovel = insert_imovel(connection,"26620040", "Petrópolis", "Centro", "16 de março", "Numero 890", 3, 1, 350.45);
 
         CertidaoImovel *certidao_imovel = insert_certidao_imovel(connection, proprietario->getAttribute("id"),
                                                                  imovel->getAttribute("id"), BaseTable::generateUUID());
