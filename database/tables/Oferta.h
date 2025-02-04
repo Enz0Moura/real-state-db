@@ -17,8 +17,8 @@ class Oferta: public BaseTable {
         addForeignKey("id_prop", "proprietarios", "id", "CASCADE");
         addColumn("id_imovel", std::string(UUID) + " NOT NULL");
         addForeignKey("id_imovel", "imoveis", "id", "CASCADE");
-        addColumn("data", "DATETIME");
         addColumn("valor_desejado", "FLOAT");
+        addColumn("data", "DATETIME");
     }
     void set_id_prop(std::string id_prop);
     void set_id_imovel(std::string id_imovel);

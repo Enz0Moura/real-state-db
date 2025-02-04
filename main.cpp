@@ -47,7 +47,7 @@ int main() {
         Imovel *imovel = insert_imovel(connection, 3, 1, 350.45);
 
         CertidaoImovel *certidao_imovel = insert_certidao_imovel(connection, proprietario->getAttribute("id"),
-                                                                 imovel->getAttribute("id"));
+                                                                 imovel->getAttribute("id"), BaseTable::generateUUID());
 
         CorretorAutonomo *corretor_autonomo = insert_corretor_autonomo(connection, BaseTable::generateUUID(), "Kleber",
                                                                        "1987-05-25", 500.221);

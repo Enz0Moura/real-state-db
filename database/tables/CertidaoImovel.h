@@ -18,16 +18,18 @@ class CertidaoImovel: public BaseTable {
         addForeignKey("id_prop", "proprietarios", "id", "CASCADE");
         addColumn("id_imovel", std::string(UUID) + " NOT NULL");
         addForeignKey("id_imovel", "imoveis", "id", "CASCADE");
+        addColumn("num_registro", std::string(UUID) + " NOT NULL");
         addColumn("data_registro", "DATETIME");
     }
 
     void set_id_prop(std::string id_prop);
     void set_id_imovel(std::string id_imovel);
+    void set_num_registro(std::string num_registro);
     void set_data_registro(std::time_t data_registro);
 
 };
 
-CertidaoImovel* insert_certidao_imovel(MYSQL* conn, std::string id_prop, std::string id_imovel, std::optional<std::time_t> data_registro= std::nullopt);
+CertidaoImovel* insert_certidao_imovel(MYSQL* conn, std::string id_prop, std::string id_imovel, std::string num_registro, std::optional<std::time_t> data_registro= std::nullopt);
 
 
 
