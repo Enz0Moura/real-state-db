@@ -27,6 +27,8 @@ add_executable(imobiliaria_BD main.cpp
         database/tables/Oferta.cpp
         database/tables/Oferta.h
         database/tables/CorretorAutonomo.cpp
-        database/tables/CorretorAutonomo.h)
+        database/tables/CorretorAutonomo.h
+        database/tables/Visita.cpp
+        database/tables/Visita.h)
 
 target_link_libraries(imobiliaria_BD mysqlclient)

@@ -8,6 +8,7 @@
 #include "tables/Oferta.h"
 #include "tables/Proprietario.h"
 #include "tables/Telefone.h"
+#include "tables/Visita.h"
 
 std::unordered_map<std::string, std::string> Database::load_env(const std::string& filename) {
     std::unordered_map<std::string, std::string> env_vars;
@@ -125,8 +126,9 @@ void Database::create_tables() {
     Imovel imovel;
     CertidaoImovel certidao_imovel;
     Oferta oferta;
+    Visita visita;
 
-    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo};
+    std::vector<BaseTable*> tables = {&inquilino, &fiador, &proprietario, &imovel, &certidao_imovel, &oferta, &corretor_autonomo, &visita, &telefone_fiador, &telefone_inquilino, &telefone_proprietario, &telefone_corretor_autonomo};
     createAllTables(conn, tables);
 }
 
