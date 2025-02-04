@@ -43,10 +43,10 @@ std::string BaseTable::generateUUID() {
     for (int i = 0; i < 8; i++) ss << dis(gen);
     ss << "-";
     for (int i = 0; i < 4; i++) ss << dis(gen);
-    ss << "-4"; // UUID v4
+    ss << "-4";
     for (int i = 0; i < 3; i++) ss << dis(gen);
     ss << "-";
-    ss << dis2(gen); // Primeiro dígito entre 8 e 11
+    ss << dis2(gen);
     for (int i = 0; i < 3; i++) ss << dis(gen);
     ss << "-";
     for (int i = 0; i < 12; i++) ss << dis(gen);
