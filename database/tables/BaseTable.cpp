@@ -25,6 +25,12 @@ std::time_t BaseTable::stringToTimeT(const std::string& datetime, const std::str
     return std::mktime(&tm);
 }
 
+std::string BaseTable::date_to_datetime(const std::string& date, const std::string& fmt) {
+    std::time_t data_timestamp = stringToTimeT(date, fmt);
+    std::string data_date_time = formatDateTime(data_timestamp);
+    return data_date_time;
+}
+
 std::string BaseTable::generateUUID() {
     std::random_device rd;
     std::mt19937 gen(rd());

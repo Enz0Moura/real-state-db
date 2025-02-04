@@ -12,6 +12,8 @@
 
 #define UUID "CHAR(36)"
 #define DATE_FORMAT "%Y-%m-%d"
+#define DATE_TIME_FORMAT "%Y-%m-%d %H:%M:%S"
+
 
 class BaseTable {
 protected:
@@ -47,9 +49,11 @@ public:
 
     static std::string getCurrentDateTime();
 
-    static std::string formatDateTime(std::time_t timestamp, const std::string& fmt="%Y-%m-%d %H:%M:%S");
+    static std::string formatDateTime(std::time_t timestamp, const std::string& fmt=DATE_TIME_FORMAT);
 
-    static std::time_t stringToTimeT(const std::string& datetime, const std::string& fmt="%Y-%m-%d %H:%M:%S");
+    static std::time_t stringToTimeT(const std::string& datetime, const std::string& fmt=DATE_TIME_FORMAT);
+
+    static std::string date_to_datetime(const std::string& date, const std::string& fmt=DATE_FORMAT);
 };
 
 void createAllTables(MYSQL* conn, const std::vector<BaseTable*>& tables);
