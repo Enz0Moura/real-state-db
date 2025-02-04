@@ -1,9 +1,29 @@
 #include "BaseTable.h"
 
-#include <algorithm>
-#include <sstream>
-#include <iomanip>
-#include <random>
+std::string BaseTable::getCurrentDateTime() {
+    std::time_t now = std::time(nullptr);
+    return formatDateTime(now);
+}
+
+std::string BaseTable::formatDateTime(std::time_t timestamp, const std::string& fmt) {
+    std::tm* timeinfo = std::localtime(&timestamp);
+    std::ostringstream oss;
+    oss << std::put_time(timeinfo, fmt.c_str());
+    return oss.str();
+}
+
+std::time_t BaseTable::stringToTimeT(const std::string& datetime, const std::string& fmt) {
+    std::tm tm = {};
+    std::istringstream ss(datetime);
+
+    ss >> std::get_time(&tm, fmt.c_str());
+
+    if (ss.fail()) {
+        throw std::runtime_error("Failed converting string to DateTime");
+    }
+
+    return std::mktime(&tm);
+}
 
 std::string BaseTable::generateUUID() {
     std::random_device rd;
@@ -113,8 +133,12 @@ std::string BaseTable::getInsertQuery() const {
         if (column.first == primaryKey && column.second.find("AUTO_INCREMENT") != std::string::npos) {
             continue;
         }
+        if (column.second.find("DATETIME") != std::string::npos && values.at(column.first).empty()) {
+            const_cast<BaseTable*>(this)->values[column.first] = getCurrentDateTime();
+        }
 
         if (!first) query += ", ";
+
         query += "'" + values.at(column.first) + "'";
         first = false;
     }
