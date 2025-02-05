@@ -2,13 +2,17 @@
 #define BASE_TABLE_H
 #include <iostream>
 #include <mysql/mysql.h>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <ctime>
 #include <algorithm>
+#include <functional>
 #include <iomanip>
 #include <random>
+#include <memory>
+#include <functional>
 
 #define UUID "CHAR(36)"
 #define DATE_FORMAT "%Y-%m-%d"
@@ -24,6 +28,10 @@ protected:
     std::vector<std::tuple<std::string, std::string, std::string>> foreignKeys;
 public:
     explicit BaseTable(std::string name) : tableName(std::move(name)) {}
+
+    virtual ~BaseTable() = default;
+
+    void set_id(std::string id);
 
     void addColumn(const std::string& columnName, const std::string& columnType);
 
@@ -48,6 +56,12 @@ public:
     bool remove_entry(MYSQL* conn);
 
     void fetchFromDB(MYSQL* conn);
+
+    static std::unordered_map<std::string, std::function<std::shared_ptr<BaseTable>()>> factories;
+
+    static void registerTable(const std::string& tableName, std::function<std::shared_ptr<BaseTable>()> factoryMethod);
+
+    static std::vector<std::shared_ptr<BaseTable>> fetchAll(MYSQL* conn, const std::string& tableName);
 
     static std::string generateUUID();
 

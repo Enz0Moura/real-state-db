@@ -1,5 +1,12 @@
 #include "CertidaoImovel.h"
 
+bool certidao_imovel_registered = []() {
+    BaseTable::registerTable("certidoes_imoveis", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<CertidaoImovel>();
+    });
+    return true;
+}();
+
 void CertidaoImovel::set_id_prop(std::string id_prop) {
     setAttribute("id_prop", id_prop);
 }

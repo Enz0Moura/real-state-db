@@ -1,5 +1,13 @@
 #include "Oferta.h"
 
+bool oferta_registered = []() {
+    BaseTable::registerTable("ofertas", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<Oferta>();
+    });
+    return true;
+}();
+
+
 void Oferta::set_data(std::string data) {
     std::string data_date_time = date_to_datetime(data);
     setAttribute("data", data_date_time);

@@ -4,6 +4,13 @@
 
 #include "Fiador.h"
 
+bool fiador_registered = []() {
+    BaseTable::registerTable("fiadores", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<Fiador>();
+    });
+    return true;
+}();
+
 void Fiador::link_inq_fiador(std::string id_inq){
     setAttribute("id_inq", id_inq);
 }

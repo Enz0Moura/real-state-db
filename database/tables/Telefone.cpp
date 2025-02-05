@@ -1,5 +1,26 @@
 #include "Telefone.h"
 
+bool telefone_inquilino_registered = []() {
+    BaseTable::registerTable("telefones_inquilinos", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<TelefoneInquilino>();
+    });
+    return true;
+}();
+
+bool telefone_fiador_registered = []() {
+    BaseTable::registerTable("telefones_fiadores", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<TelefoneFiador>();
+    });
+    return true;
+}();
+
+bool telefone_proprietario_registered = []() {
+    BaseTable::registerTable("telefones_proprietarios", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<TelefoneProprietario>();
+    });
+    return true;
+}();
+
 void Telefone::set_numero(std::string numero) {
     setAttribute("numero", numero);
 }

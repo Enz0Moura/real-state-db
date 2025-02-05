@@ -1,7 +1,3 @@
-//
-// Created by enzo-moura on 2/4/25.
-//
-
 #ifndef OFERTA_H
 #define OFERTA_H
 #include "BaseTable.h"

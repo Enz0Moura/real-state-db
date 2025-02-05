@@ -4,6 +4,13 @@
 
 #include "Imovel.h"
 
+bool imovel_registered = []() {
+    BaseTable::registerTable("imoveis", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<Imovel>();
+    });
+    return true;
+}();
+
 void Imovel::set_cep(std::string cep) {
     setAttribute("cep",cep);
 }

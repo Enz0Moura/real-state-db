@@ -1,8 +1,11 @@
-//
-// Created by enzo-moura on 2/3/25.
-//
-
 #include "Proprietario.h"
+
+bool proprietario_registered = []() {
+    BaseTable::registerTable("proprietarios", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<Proprietario>();
+    });
+    return true;
+}();
 
 void Proprietario::set_cpf(std::string cpf) {
     setAttribute("cpf", cpf);

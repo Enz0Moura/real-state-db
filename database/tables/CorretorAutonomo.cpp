@@ -1,5 +1,12 @@
 #include "CorretorAutonomo.h"
 
+bool corretor_autonomo_registered = []() {
+    BaseTable::registerTable("corretores_autonomos", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<CorretorAutonomo>();
+    });
+    return true;
+}();
+
 void CorretorAutonomo::set_creci(std::string creci) {
     setAttribute("creci", creci);
 }

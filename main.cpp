@@ -63,9 +63,16 @@ int main() {
 
         insert_contrato_aluguel(connection, id_inquilino2, imovel->getAttribute("id"), BaseTable::generateUUID(), 11000, "2026-06-12");
 
-        inquilino->setAttribute("nome", "NOME MODIFICADO");
-        inquilino->update(connection);
-        inquilino->remove_entry(connection);
+        std::vector<std::shared_ptr<BaseTable>> inquilinos = BaseTable::fetchAll(connection, "inquilinos");
+
+        for (const auto& record : inquilinos) {
+            auto inquilino = std::dynamic_pointer_cast<Inquilino>(record);
+            if (inquilino) {
+                std::cout << "Inquilino: " << inquilino->getAttribute("nome")
+                          << " - CPF: " << inquilino->getAttribute("cpf") << std::endl;
+            }
+        }
+
 
         mysql_close(connection);
     } catch (const std::exception &e) {

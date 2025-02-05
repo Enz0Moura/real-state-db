@@ -1,5 +1,13 @@
 #include "ContratoAluguel.h"
 
+bool contrato_aluguel_registered = []() {
+    BaseTable::registerTable("contratos_alugueis", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<ContratoAluguel>();
+    });
+    return true;
+}();
+
+
 void ContratoAluguel::set_id_inquilino(std::string id_inquilino) {
     setAttribute("id_inquilino", id_inquilino);
 }

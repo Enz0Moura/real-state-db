@@ -1,5 +1,12 @@
 #include "Visita.h"
 
+bool visita_registered = []() {
+    BaseTable::registerTable("visitas", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<Visita>();
+    });
+    return true;
+}();
+
 void Visita::set_id_corretor(std::string &id_corretor) {
     setAttribute("id_corretor", id_corretor);
 }

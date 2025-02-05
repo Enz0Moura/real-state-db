@@ -301,3 +301,49 @@ void BaseTable::fetchFromDB(MYSQL* conn) {
 
     mysql_free_result(res);
 };
+
+void BaseTable::set_id(std::string id) {
+    //REALLY Dangerous method
+    setAttribute("id", id);
+}
+
+std::unordered_map<std::string, std::function<std::shared_ptr<BaseTable>()>> BaseTable::factories;
+
+void BaseTable::registerTable(const std::string& tableName, std::function<std::shared_ptr<BaseTable>()> factoryMethod) {
+    factories[tableName] = factoryMethod;
+}
+
+std::vector<std::shared_ptr<BaseTable>> BaseTable::fetchAll(MYSQL* conn, const std::string& tableName) {
+    std::vector<std::shared_ptr<BaseTable>> records;
+
+    if (factories.find(tableName) == factories.end()) {
+        throw std::runtime_error("Table factory not registered for: " + tableName);
+    }
+
+    std::string query = "SELECT * FROM " + tableName + ";";
+    if (mysql_query(conn, query.c_str())) {
+        throw std::runtime_error("Error fetching all records from table " + tableName + ": " + std::string(mysql_error(conn)) + "\n");
+    }
+
+    MYSQL_RES* res = mysql_store_result(conn);
+    if (!res) {
+        throw std::runtime_error("Error retrieving result set: " + std::string(mysql_error(conn)) + "\n");
+    }
+
+    MYSQL_ROW row;
+    while ((row = mysql_fetch_row(res))) {
+        auto record = factories[tableName]();
+        unsigned int num_fields = mysql_num_fields(res);
+        MYSQL_FIELD* fields = mysql_fetch_fields(res);
+
+        for (unsigned int i = 0; i < num_fields; i++) {
+            record->setAttribute(fields[i].name, row[i] ? row[i] : "");
+        }
+
+        records.push_back(record);
+    }
+
+    mysql_free_result(res);
+    return records;
+}
+

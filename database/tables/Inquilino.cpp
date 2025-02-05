@@ -1,10 +1,13 @@
-//
-// Created by enzo-moura on 2/2/25.
-//
-
 #include "Inquilino.h"
 #include <sstream>
 #include <iomanip>
+
+bool inquilino_registered = []() {
+    BaseTable::registerTable("inquilinos", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<Inquilino>();
+    });
+    return true;
+}();
 
 void Inquilino::set_cpf(std::string cpf) {
     setAttribute("cpf", cpf);

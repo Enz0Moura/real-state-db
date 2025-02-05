@@ -1,5 +1,12 @@
 #include "Proposta.h"
 
+bool proposta_registered = []() {
+    BaseTable::registerTable("propostas", []() -> std::shared_ptr<BaseTable> {
+        return std::make_shared<Proposta>();
+    });
+    return true;
+}();
+
 void Proposta::set_id_imovel(std::string id_imovel) {
     setAttribute("id_imovel", id_imovel);
 }
