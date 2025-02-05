@@ -10,16 +10,25 @@
 #include "../database/tables/Imovel.h"
 
 void limpar_tela();
-void listarClientesProposta(MYSQL* conn);
-void listarImoveisCadastrados(MYSQL* conn);
-void listar_ofertas_por_imovel(MYSQL* conn);
-/*
-void corretorMaiorRendimento2022(MYSQL* conn);
-void listarTresImoveisMaisCaros(MYSQL* conn);
-void inserirNovoRegistro(MYSQL* conn);
+
+void listarClientesProposta(MYSQL *conn);
+
+void listarImoveisCadastrados(MYSQL *conn);
+
+void listar_ofertas_por_imovel(MYSQL *conn);
+
+void corretor_maior_rendimento(MYSQL *conn);
+
+void listar_top_tres_imoveis_mais_caros(MYSQL *conn);
+
+void inserir_imovel(MYSQL *conn);
+
+void inserir_novo_registro(MYSQL *conn);
+
+/*void inserirNovoRegistro(MYSQL* conn);
 void atualizarRegistro(MYSQL* conn);
 void deletarRegistro(MYSQL* conn);
 */
 
-void menu(MYSQL* conn);
+void menu(MYSQL *conn);
 #endif //USERINTERFACE_H
