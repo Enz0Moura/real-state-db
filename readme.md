@@ -4,9 +4,9 @@
 
 O projeto **Real State DB** é um sistema para uma imobiliária, desenvolvido em **Linguagem C++** e utilizando **MySQL** como Sistema Gerenciador de Banco de Dados (SGBD). O objetivo é gerenciar informações de clientes, corretores e imóveis, além de registrar e acompanhar ofertas, visitas e contratos de aluguel.
 
-## 🏗️ Estrutura do Projeto
+## Estrutura do Projeto
 
-### 📁 Diretórios e Arquivos
+### Diretórios e Arquivos
 
 - `src/` - Código-fonte do sistema.
 - `database/` - Módulo para criação e manipulação do banco de dados.
@@ -36,14 +36,14 @@ O projeto **Real State DB** é um sistema para uma imobiliária, desenvolvido em
     - Data da oferta e valor do aluguel.
     - Gerenciamento de ofertas e cancelamentos.
 
-### 📌 Operações do Sistema
+### Operações do Sistema
 
 - Registrar visitas de inquilinos a imóveis.
 - Registrar propostas de aluguel e suas condições (valor, validade).
 - Registrar contratos de aluguel com inquilinos e proprietários.
 - Gerenciar e atualizar informações do banco de dados.
 
-### 📌 Consultas e Relatórios
+### Consultas e Relatórios
 
 - Listagem de clientes cadastrados com propostas realizadas.
 - Listagem de imóveis cadastrados (alugados ou não).
@@ -52,7 +52,7 @@ O projeto **Real State DB** é um sistema para uma imobiliária, desenvolvido em
 - Listagem dos três imóveis mais caros.
 - Outras consultas adicionais relevantes.
 
-## 📚 Biblioteca `Database`
+## Biblioteca `Database`
 
 A biblioteca `Database` foi desenvolvida para gerenciar a comunicação entre o sistema e o banco de dados MySQL. Ela possui as seguintes funcionalidades:
 
@@ -70,7 +70,7 @@ A biblioteca `Database` foi desenvolvida para gerenciar a comunicação entre o 
 
 A biblioteca utiliza a classe base `BaseTable`, que fornece abstrações para operações comuns em tabelas do banco de dados. Todas as tabelas são derivadas de `BaseTable`, permitindo reuso de código e padronização de operações.
 
-#### 📌 Classe `BaseTable`
+#### Classe `BaseTable`
 
 A classe `BaseTable` oferece métodos para:
 
@@ -80,7 +80,7 @@ A classe `BaseTable` oferece métodos para:
 - Buscar informações diretamente do banco de dados.
 - Gerar UUIDs e manipular datas.
 
-#### 📌 Classes Relacionadas
+#### Classes Relacionadas
 
 A biblioteca inclui diversas classes que herdam de `BaseTable` para gerenciar as tabelas do banco:
 
@@ -113,13 +113,13 @@ Essa estrutura modular permite uma melhor organização e manutenção do códig
 sudo apt update && sudo apt install libmysqlclient-dev
 ```
 
-### 🔗 Conexão com o MySQL
+### Conexão com o MySQL
 
 Certifique-se de que o MySQL está instalado e em execução.
 
 Adicione as credenciais do seu usuário no arquivo .env.
 
-### 🏗️ Compilação do Código
+### Compilação do Código
 
 Ao compilar o código C++, é necessário linkar as bibliotecas do MySQL:
 
@@ -144,7 +144,7 @@ g++ -std=c++20 -I/usr/include/mysql -o imobiliaria \
     -L/usr/include/mysql -lmysqlclient
 ```
 
-### 🚀 Execução do Sistema
+### Execução do Sistema
 
 ```sh
 ./imobiliaria
