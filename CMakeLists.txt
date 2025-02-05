@@ -33,6 +33,10 @@ add_executable(imobiliaria_BD main.cpp
         database/tables/Proposta.cpp
         database/tables/Proposta.h
         database/tables/ContratoAluguel.cpp
-        database/tables/ContratoAluguel.h)
+        database/tables/ContratoAluguel.h
+        interface/UserInterface.cpp
+        interface/UserInterface.h
+        database/example.cpp
+        database/example.h)
 
 target_link_libraries(imobiliaria_BD mysqlclient)

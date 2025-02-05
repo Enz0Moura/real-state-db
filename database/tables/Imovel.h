@@ -21,6 +21,7 @@ class Imovel: public BaseTable {
         addColumn("num_vagas", "INTEGER");
         addColumn("area_construida", "FLOAT");
     }
+    void print_imovel();
     void set_cep(std::string cep);
     void set_cidade(std::string cidade);
     void set_bairro(std::string bairro);

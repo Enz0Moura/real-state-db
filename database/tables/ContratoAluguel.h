@@ -14,6 +14,7 @@ class ContratoAluguel: public BaseTable {
         addForeignKey("id_imovel", "imoveis", "id", "SET NULL");
         addColumn("num_contrato", std::string(UUID) + " UNIQUE");
         addColumn("valor", "FLOAT");
+        addColumn("data_inicio", "DATETIME");
         addColumn("duracao", "DATETIME");
     }
 
@@ -27,9 +28,11 @@ class ContratoAluguel: public BaseTable {
 
     void set_duracao(std::string duracao);
 
+    void set_data_inicio(std::string data_inicio);
+
 };
 
-ContratoAluguel* insert_contrato_aluguel(MYSQL* conn, std::string id_inquilino, std::string id_imovel, std::string num_contrato, float valor ,std::string duracao);
+ContratoAluguel* insert_contrato_aluguel(MYSQL* conn, std::string id_inquilino, std::string id_imovel, std::string num_contrato, float valor ,std::string duracao, std::string data_inicio);
 
 
 #endif //CONTRATOALUGUEL_H

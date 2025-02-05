@@ -17,8 +17,12 @@ std::unordered_map<std::string, std::string> Database::load_env(const std::strin
     std::ifstream file(filename);
 
     if (!file) {
-        std::cerr << "No .env found " << filename << std::endl;
-        return env_vars;
+        std::cout << "No .env found " << filename << " . Trying ../.env" << std::endl;
+        file.open("../" + filename);
+        if (!file) {
+            std::cerr << "No .env found in " << "../" << filename << std::endl;
+            return env_vars;
+        }
     }
 
     std::string line;

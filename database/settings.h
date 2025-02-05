@@ -19,7 +19,7 @@ private:
     std::unordered_map<std::string, std::string> load_env(const std::string& filename);
 
 public:
-    explicit Database(const std::string& env_file = "../.env");
+    explicit Database(const std::string& env_file = ".env");
 
     MYSQL* connect();
 

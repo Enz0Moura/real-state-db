@@ -57,3 +57,17 @@ Imovel* insert_imovel(MYSQL* conn, std::string cep, std::string cidade, std::str
     return imovel;
 }
 
+void Imovel::print_imovel() {
+        std::cout << "Informações:\n";
+        std::cout << "ID: " << this->getAttribute("id") << "\n";
+        std::cout << "CEP: " << this->getAttribute("cep") << "\n";
+        std::cout << "Cidade: " << this->getAttribute("cidade") << "\n";
+        std::cout << "Bairro: " << this->getAttribute("bairro") << "\n";
+        std::cout << "Rua: " << this->getAttribute("rua") << "\n";
+        std::cout << "Complemento: " << this->getAttribute("complemento") << "\n";
+        std::cout << "Numero de comodos: " << this->getAttribute("num_comodos") << "\n";
+        std::cout << "Numero de vagas: " << this->getAttribute("num_vagas") << "\n";
+        std::cout << "Area Construida: " << this->getAttribute("area_construida") << " m^2\n";
+}
+
+

@@ -30,13 +30,19 @@ void ContratoAluguel::set_duracao(std::string duracao) {
     setAttribute("duracao", duracao_datetime);
 }
 
-ContratoAluguel *insert_contrato_aluguel(MYSQL *conn, std::string id_inquilino, std::string id_imovel, std::string num_contrato, float valor, std::string duracao) {
+void ContratoAluguel::set_data_inicio(std::string data_inicio) {
+    std::string data_inicio_datetime = date_to_datetime(data_inicio);
+    setAttribute("data_inicio", data_inicio_datetime);
+}
+
+ContratoAluguel *insert_contrato_aluguel(MYSQL *conn, std::string id_inquilino, std::string id_imovel, std::string num_contrato, float valor, std::string duracao, std::string data_inicio) {
     auto* contrato_aluguel = new ContratoAluguel();
     contrato_aluguel->set_id_inquilino(id_inquilino);
     contrato_aluguel->set_id_imovel(id_imovel);
     contrato_aluguel->set_num_contrato(num_contrato);
     contrato_aluguel->set_valor(valor);
     contrato_aluguel->set_duracao(duracao);
+    contrato_aluguel->set_data_inicio(data_inicio);
     contrato_aluguel->insert(conn);
     return contrato_aluguel;
 }
